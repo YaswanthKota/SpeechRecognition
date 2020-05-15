@@ -3,6 +3,8 @@ import wave
 import speech_recognition as sr
 import subprocess
 
+def say(text):
+    subprocess.call("PowerShell -Command Add-Type –AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('"+ text +"')",shell=True)
 
 def play_audio(filename):
     chunk = 1024
@@ -41,9 +43,12 @@ def initSpeech():
 
     try:
         command = r.recognize_google(audio)
+        print("Your command:")
+        print(command)
+        say('hai my name is rambo and you said that '+command)
+        with open('speech.txt','w+') as f:
+            f.write('You said that "'+command+'"')
     except:
         print("Couldn't understand you, bro.")
-
-    print("Your command:")
-    print(command)
-initSpeech()
+if __name__ == "__main__":
+    initSpeech()
